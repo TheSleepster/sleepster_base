@@ -10,41 +10,43 @@
 #include "sleepster_base_types.h"
 #include <stdarg.h>
 #include <stdio.h>
-#include <cstring>
+#include <string.h>
 
 #ifdef INTERNAL_DEBUG
 // MSVC
-#ifdef _MSC_VER
-    #include <intrin.h>
-    #define DebugHalt() __debugbreak()
-#else
-    #define DebugHalt() __builtin_trap()
-#endif
+    #ifdef _MSC_VER
+        #include <intrin.h>
+        #define DebugHalt() __debugbreak()
+    #else
+        #define DebugHalt() __builtin_trap()
+    #endif
 
-#define Assert(Condition, Message, ...)                                                 \
-{                                                                                       \
-    if (!(Condition))                                                                   \
-    {                                                                                   \
-        Log(LOG_FATAL, "Assertion failed:\n (%s) " Message, #Condition, ##__VA_ARGS__); \
-        DebugHalt();                                                                    \
-    }                                                                                   \
+#define Assert(Condition, Message, ...)                                                    \
+{                                                                                          \
+    if (!(Condition))                                                                      \
+    {                                                                                      \
+        Log(SL_LOG_FATAL, "Assertion failed:\n (%s) " Message, #Condition, ##__VA_ARGS__); \
+        DebugHalt();                                                                       \
+    }                                                                                      \
 }
+
+#define DebugBreak() DebugHalt()
 #else
 
 #define Assert(Condition, Message, ...)
 #define DebugHalt()
-#define DebugBreak()
+#define DebugBreak() DebugHalt()
 
 #endif
 
 #define InvalidCodePath DebugHalt()
 enum debug_log_level
 {
-    LOG_TRACE,
-    LOG_INFO,
-    LOG_WARNING,
-    LOG_ERROR,
-    LOG_FATAL
+    SL_LOG_TRACE,
+    SL_LOG_INFO,
+    SL_LOG_WARNING,
+    SL_LOG_ERROR,
+    SL_LOG_FATAL
 };
 
 #define Log(Level, Message, ...) _Log(Level, Message, __FILE__, __LINE__, ##__VA_ARGS__)

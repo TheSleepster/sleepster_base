@@ -63,12 +63,12 @@ StringCopy(memory_arena *Arena, string_u8 String)
         }
         else
         {
-            Log(LOG_ERROR, "Failed to allocate the string's data...");
+            Log(SL_LOG_ERROR, "Failed to allocate the string's data...");
         }
     }
     else
     {
-        Log(LOG_ERROR, "Failed to arena alloc Result...\n");
+        Log(SL_LOG_ERROR, "Failed to arena alloc Result...\n");
     }
     return(Result);
 }

@@ -24,6 +24,7 @@
 */
 
 #include <string.h>
+#include "sleepster_base_debug.h"
 
 constexpr uint32 DefaultDArrayCapacity = 10;
 constexpr uint32 DArrayResizeFactor = 2;
@@ -91,7 +92,7 @@ DArrayCreate_(uint64 TypeSize, const char *File = null, int32 Line = -1, uint64 
 #ifdef INTERNAL_DEBUG
     if(File && Line > 0)
     {
-        Log(LOG_TRACE, "'%s', Line: '%d'...\n\t\t  Dynamic Array with of size: '%d' has been created...",
+        Log(SL_LOG_TRACE, "'%s', Line: '%d'...\n\t\t  Dynamic Array with of size: '%d' has been created...",
             File, Line, ArraySize + HeaderSize);
     }
 #endif
@@ -105,7 +106,7 @@ DArrayDestroy(void *Array)
 #ifdef INTERNAL_DEBUG
     uint64 Capacity    = DArrayGetCapacity(Array);
     uint64 ElementSize = DArrayGetElementSize(Array);
-    Log(LOG_TRACE, "Dynamic Array with of size: '%d' has been freed...", Capacity * ElementSize);
+    Log(SL_LOG_TRACE, "Dynamic Array with of size: '%d' has been freed...", Capacity * ElementSize);
 #endif
 
     uint64 *Header = ((uint64 *)Array - DARRAY_HEADER_SIZE);
@@ -123,7 +124,7 @@ DArrayResize(void *Array)
     void *NewArray = PlatformHeapRealloc(Header, ArraySize + (DARRAY_HEADER_SIZE * sizeof(uint64)));
 
 #ifdef INTERNAL_DEBUG
-    Log(LOG_TRACE, "Dynamic Array has been resized from: '%d' to a new size of: '%d'...",
+    Log(SL_LOG_TRACE, "Dynamic Array has been resized from: '%d' to a new size of: '%d'...",
         Capacity * ElementSize, ArraySize);
 #endif
 
@@ -135,7 +136,7 @@ DArrayResize(void *Array)
     }
     else
     {
-        Log(LOG_FATAL, "DArray Resize from size '%d' to size '%d' has failed...", ArraySize, ArraySize * DArrayResizeFactor);
+        Log(SL_LOG_FATAL, "DArray Resize from size '%d' to size '%d' has failed...", ArraySize, ArraySize * DArrayResizeFactor);
         DebugHalt();
     }
     return(NewArray);
@@ -162,7 +163,7 @@ DArrayAppendValue_(void *Array, void *Value, uint64 ElementSize)
     }
     else
     {
-        Log(LOG_ERROR,
+        Log(SL_LOG_ERROR,
             "You are attempting to insert an element of size '%d' into a DArray that only takes size '%d'...",
             ElementSize, ArrayElementSize);
         DebugHalt();
@@ -175,12 +176,11 @@ DArrayPopLastIndex(void *Array, uint32 ReturnPointerDataSize)
 {
     void *Result = 0;
     
-    uint64 Capacity         = DArrayGetCapacity(Array);
     uint64 UsedElementCount = DArrayGetUsedElementCount(Array);
     uint64 ArrayElementSize = DArrayGetElementSize(Array);
     if(ReturnPointerDataSize != ArrayElementSize)
     {
-        Log(LOG_WARNING, "You are returning a value of size '%d' to a pointer that wants a value of size '%'...",
+        Log(SL_LOG_WARNING, "You are returning a value of size '%d' to a pointer that wants a value of size '%'...",
             ArrayElementSize, ReturnPointerDataSize);
         DebugBreak();
     }
@@ -202,7 +202,7 @@ DArrayInsertAt_(void *Array, void *Value, uint32 ValueSize, uint64 Index)
     uint64 ArrayElementSize = DArrayGetElementSize(Array);
     if(ValueSize != ArrayElementSize)
     {
-        Log(LOG_ERROR, "You are attempting to insert a value at array index '%d', but the value has a size of '%' while the array is for elements of size '%'...",
+        Log(SL_LOG_ERROR, "You are attempting to insert a value at array index '%d', but the value has a size of '%' while the array is for elements of size '%'...",
             Index, ValueSize, ArrayElementSize);
     }
 
@@ -222,7 +222,7 @@ DArrayInsertAt_(void *Array, void *Value, uint32 ValueSize, uint64 Index)
     }
     else
     {
-        Log(LOG_ERROR, "Cannot insert at index '%d' as the capacity for the array is '%d'...", Index, Capacity);
+        Log(SL_LOG_ERROR, "Cannot insert at index '%d' as the capacity for the array is '%d'...", Index, Capacity);
         DebugHalt();
         return;
     }
@@ -238,7 +238,7 @@ DArrayRemoveAtIndex(void *Array, uint64 Index, uint32 ReturnPointerDataSize)
     uint64 ArrayElementSize = DArrayGetElementSize(Array);
     if(ReturnPointerDataSize != ArrayElementSize)
     {
-        Log(LOG_WARNING, "You are returning a value of size '%d' to a pointer that wants a value of size '%'...",
+        Log(SL_LOG_WARNING, "You are returning a value of size '%d' to a pointer that wants a value of size '%'...",
             ArrayElementSize, ReturnPointerDataSize);
         DebugBreak();
     }
@@ -261,7 +261,7 @@ DArrayRemoveAtIndex(void *Array, uint64 Index, uint32 ReturnPointerDataSize)
     }
     else
     {
-        Log(LOG_FATAL, "You cannot access index '%d' as the darray is of capacity '%'...", Index, Capacity);
+        Log(SL_LOG_FATAL, "You cannot access index '%d' as the darray is of capacity '%'...", Index, Capacity);
         DebugBreak();
     }
 

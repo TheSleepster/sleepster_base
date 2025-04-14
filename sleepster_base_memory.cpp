@@ -26,13 +26,13 @@ MemoryPoolCreate(uint64 Size)
         Result.Offset = (uint8 *)Result.Data;
 
 #ifdef INTERNAL_DEBUG
-        Log(LOG_TRACE, "A Memory Pool of size: '%.2f'GB has been allocated from the OS...",
+        Log(SL_LOG_TRACE, "A Memory Pool of size: '%.2f'GB has been allocated from the OS...",
             Size * 0.001 * 0.001 * 0.001);
 #endif
     }
     else
     {
-        Log(LOG_ERROR, "Allocation of size '%d' Failed...\n", Size);
+        Log(SL_LOG_ERROR, "Allocation of size '%d' Failed...\n", Size);
 
         memory_pool Error = {};
         return(Error);
@@ -46,12 +46,12 @@ ArenaCreate(memory_pool *ParentPool, uint64 ArenaSize)
 {
     if(uint32(ParentPool->Used + ArenaSize) > ParentPool->PoolSize)
     {
-        Log(LOG_FATAL, "The passed pool only has a size of '%d', but the allocation would push it's used to '%d'...",
+        Log(SL_LOG_FATAL, "The passed pool only has a size of '%d', but the allocation would push it's used to '%d'...",
             ParentPool->PoolSize, ArenaSize + ParentPool->Used);
     }
 
 #ifdef INTERNAL_DEBUG
-    Log(LOG_TRACE, "Arena with size: '%d' has been created... Space remaining in pool: '%d'...",
+    Log(SL_LOG_TRACE, "Arena with size: '%d' has been created... Space remaining in pool: '%d'...",
         ArenaSize, ParentPool->PoolSize - ParentPool->Used);
 #endif
     
@@ -95,7 +95,7 @@ ArenaAllocate(memory_arena *Arena, uint64 Size, const char *Filename, int32 Line
 #ifdef INTERNAL_DEBUG
     if(Filename && Line > 0)
     {
-        Log(LOG_TRACE, "'%s', Line: '%d'...\n \t\t  Size of: '%d', has been arena allocated... Arena has: '%d' bytes remaining...",
+        Log(SL_LOG_TRACE, "'%s', Line: '%d'...\n \t\t  Size of: '%d', has been arena allocated... Arena has: '%d' bytes remaining...",
             Filename, Line, Size, Arena->Capacity - Arena->Allocated);
     }
 #endif
@@ -117,7 +117,7 @@ ArenaCreateSubArena(memory_arena *ParentArena, uint64 Capacity, uint32 Alignment
     Result.Base = (uint8 *)ArenaPushSize(ParentArena, Capacity, Alignment);
 
 #ifdef INTERNAL_DEBUG
-    Log(LOG_TRACE, "Child Arena with size: '%d' has been created... Space remaining in Parent Arena: '%'...",
+    Log(SL_LOG_TRACE, "Child Arena with size: '%d' has been created... Space remaining in Parent Arena: '%'...",
         Capacity, ParentArena->Capacity - ParentArena->Allocated);
 #endif
 

@@ -53,7 +53,7 @@ HashInsertPair(hash_table *Table, void *Key, void *Value)
     if(StringCompare((string_u8 *)Entry->Key, (string_u8 *)Key))
     {
         Entry->Value = Value;
-        Log(LOG_WARNING, "Value at index %d has been updated...", HashIndex);
+        Log(SL_LOG_WARNING, "Value at index %d has been updated...", HashIndex);
         return;
     }
 

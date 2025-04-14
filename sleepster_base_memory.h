@@ -8,6 +8,7 @@
 
 #define SLEEPSTER_BASE_MEMORY_H
 #include "sleepster_base_types.h"
+#include <stdlib.h>
 
 struct memory_pool
 {
@@ -35,5 +36,32 @@ struct memory_arena
 #define ArenaPushArray(Arena, type, Count, ...) (type *)ArenaAllocateDEBUG(Arena, sizeof(type) * (Count), ##__VA_ARGS__)
 
 internal void* ArenaAllocate(memory_arena *Arena, uint64 Size, const char *File = null, int32 Line = -1, uint32 Alignment = 4);
+
+#ifndef SLEEPSTER_BASE_MEMORY_OVERLOAD
+internal void*
+PlatformHeapAlloc(uint64 Size)
+{
+    return(malloc(Size));
+}
+
+internal void
+PlatformHeapFree(void *Data)
+{
+    free(Data);
+}
+
+internal void*
+PlatformHeapRealloc(void *Data, uint64 NewSize)
+{
+    return(realloc(Data, NewSize));
+}
+
+internal void*
+PlatformVirtualAlloc(uint64 Size)
+{
+    return(malloc(Size));
+}
+#endif
+
 
 #endif
