@@ -61,6 +61,9 @@ PlatformVirtualAlloc(uint64 Size)
 {
     return(malloc(Size));
 }
+
+internal void
+PlatfomrVirtualFree(void *Data)
 #endif
 
 
