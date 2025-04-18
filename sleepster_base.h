@@ -15,7 +15,5 @@
 #include "sleepster_base_string.h"
 #include "sleepster_base_hash_table.h"
 
-#include "sleepster_base_memory.cpp"
-
 #endif // SLEEPSTER_BASE_H
 
