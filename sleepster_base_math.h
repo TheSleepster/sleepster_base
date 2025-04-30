@@ -1,3 +1,12 @@
+#if !defined(SLEEPSTER_BASE_MATH_H)
+/* ========================================================================
+   $File: sleepster_base_math.h $
+   $Date: Sat, 19 Apr 25: 08:06PM $
+   $Revision: $
+   $Creator: Justin Lewis $
+   ======================================================================== */
+
+#define SLEEPSTER_BASE_MATH_H
 /*
   THIS IS A FORK OF HANDMADE MATH
 
@@ -307,115 +316,13 @@ union rect_i32
 
 // OPERATOR OVERLOADING
 
-static inline ivec2
-operator-(ivec2 A, ivec2 B)
-{
-    ivec2 Result = {};
-    Result.X = A.X - B.X;
-    Result.Y = A.Y - B.Y;
-    
-    return(Result);
-}
-
-static inline ivec2
-operator-(ivec2 A, int B)
-{
-    ivec2 Result = {};
-    
-    Result.X = A.X - B;
-    Result.Y = A.Y - B;
-    
-    return(Result);
-}
-
-static inline ivec2
-operator+(ivec2 A, ivec2 B)
-{
-    ivec2 Result = {};
-    Result.X = A.X + B.X;
-    Result.Y = A.Y + B.Y;
-    
-    return(Result);
-}
-
-static inline ivec2
-operator*(ivec2 A, ivec2 B)
-{
-    ivec2 Result = {};
-    Result.X = A.X * B.X;
-    Result.Y = A.Y * B.Y;
-    
-    return(Result);
-}
-
-static inline ivec2
-operator*(ivec2 A, int B)
-{
-    ivec2 Result = {};
-    
-    Result.X = int(A.X * B);
-    Result.Y = int(A.Y * B);
-    
-    return(Result);
-}
-
-static inline ivec2
-operator*(ivec2 A, float B)
-{
-    ivec2 Result = {};
-    Result.X = int(A.X * B);
-    Result.Y = int(A.Y * B);
-    
-    return(Result);
-}
-
-static inline ivec2
-operator/(ivec2 A, ivec2 B)
-{
-    ivec2 Result = {};
-    Result.X = A.X / B.X;
-    Result.Y = A.Y / B.Y;
-    
-    return(Result);
-}
-
-static inline ivec2
-operator/(ivec2 A, float B)
-{
-    ivec2 Result = {};
-    
-    Result.X = int(A.X * B);
-    Result.Y = int(A.Y * B);
-    
-    return(Result);
-}
-
-static inline ivec2
-operator/(ivec2 A, int32 B)
-{
-    ivec2 Result = {};
-    
-    Result.X = A.X * B;
-    Result.Y = A.Y * B;
-    
-    return(Result);
-}
-
-static inline ivec2
-operator*=(ivec2 &A, int B)
-{
-    A.X = A.X * B;
-    A.Y = A.Y * B;
-    return(A);
-}
-
 static inline vec2
 v2Cast(ivec2 A)
 {
     vec2 Result = {};
     
-    Result.X = float(A.X);
-    Result.Y = float(A.Y);
+    Result.X = (float)(A.X);
+    Result.Y = (float)(A.Y);
     
     return(Result);
 }
@@ -425,8 +332,8 @@ iv2Cast(vec2 A)
 {
     ivec2 Result = {};
     
-    Result.X = int(A.X);
-    Result.Y = int(A.Y);
+    Result.X = (int)(A.X);
+    Result.Y = (int)(A.Y);
     
     return(Result);
 }
@@ -491,11 +398,239 @@ typedef union vec3
     {
         return Elements[Index];
     }
+
+    static inline ivec2
+    operator-(ivec2 A, ivec2 B)
+    {
+        ivec2 Result = {};
+        Result.X = A.X - B.X;
+        Result.Y = A.Y - B.Y;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator-(ivec2 A, int B)
+    {
+        ivec2 Result = {};
+    
+        Result.X = A.X - B;
+        Result.Y = A.Y - B;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator+(ivec2 A, ivec2 B)
+    {
+        ivec2 Result = {};
+        Result.X = A.X + B.X;
+        Result.Y = A.Y + B.Y;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator*(ivec2 A, ivec2 B)
+    {
+        ivec2 Result = {};
+        Result.X = A.X * B.X;
+        Result.Y = A.Y * B.Y;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator*(ivec2 A, int B)
+    {
+        ivec2 Result = {};
+    
+        Result.X = int(A.X * B);
+        Result.Y = int(A.Y * B);
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator*(ivec2 A, float B)
+    {
+        ivec2 Result = {};
+        Result.X = int(A.X * B);
+        Result.Y = int(A.Y * B);
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator/(ivec2 A, ivec2 B)
+    {
+        ivec2 Result = {};
+        Result.X = A.X / B.X;
+        Result.Y = A.Y / B.Y;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator/(ivec2 A, float B)
+    {
+        ivec2 Result = {};
+    
+        Result.X = int(A.X * B);
+        Result.Y = int(A.Y * B);
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator/(ivec2 A, int32 B)
+    {
+        ivec2 Result = {};
+    
+        Result.X = A.X * B;
+        Result.Y = A.Y * B;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator*=(ivec2 &A, int B)
+    {
+        A.X = A.X * B;
+        A.Y = A.Y * B;
+        return(A);
+    }
+
+
+    static inline ivec2
+    operator-(ivec2 A, ivec2 B)
+    {
+        ivec2 Result = {};
+        Result.X = A.X - B.X;
+        Result.Y = A.Y - B.Y;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator-(ivec2 A, int B)
+    {
+        ivec2 Result = {};
+    
+        Result.X = A.X - B;
+        Result.Y = A.Y - B;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator+(ivec2 A, ivec2 B)
+    {
+        ivec2 Result = {};
+        Result.X = A.X + B.X;
+        Result.Y = A.Y + B.Y;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator*(ivec2 A, ivec2 B)
+    {
+        ivec2 Result = {};
+        Result.X = A.X * B.X;
+        Result.Y = A.Y * B.Y;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator*(ivec2 A, int B)
+    {
+        ivec2 Result = {};
+    
+        Result.X = int(A.X * B);
+        Result.Y = int(A.Y * B);
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator*(ivec2 A, float B)
+    {
+        ivec2 Result = {};
+        Result.X = int(A.X * B);
+        Result.Y = int(A.Y * B);
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator/(ivec2 A, ivec2 B)
+    {
+        ivec2 Result = {};
+        Result.X = A.X / B.X;
+        Result.Y = A.Y / B.Y;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator/(ivec2 A, float B)
+    {
+        ivec2 Result = {};
+    
+        Result.X = int(A.X * B);
+        Result.Y = int(A.Y * B);
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator/(ivec2 A, int32 B)
+    {
+        ivec2 Result = {};
+    
+        Result.X = A.X * B;
+        Result.Y = A.Y * B;
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    operator*=(ivec2 &A, int B)
+    {
+        A.X = A.X * B;
+        A.Y = A.Y * B;
+        return(A);
+    }
+
+    static inline vec2
+    v2Cast(ivec2 A)
+    {
+        vec2 Result = {};
+    
+        Result.X = float(A.X);
+        Result.Y = float(A.Y);
+    
+        return(Result);
+    }
+
+    static inline ivec2
+    iv2Cast(vec2 A)
+    {
+        ivec2 Result = {};
+    
+        Result.X = int(A.X);
+        Result.Y = int(A.Y);
+    
+        return(Result);
+    }
+
 #endif
 } vec3;
 
 static inline vec3
-v2Expand(vec2 A, float B)
+v2ExpandVec3(vec2 A, float B)
 {
     vec3 Result = {};
     Result.X = A.X;
@@ -589,7 +724,7 @@ typedef union vec4
 } vec4;
 
 static inline vec4
-v2Expand(vec2 A, float B, float C)
+v2ExpandVec4(vec2 A, float B, float C)
 {
     vec4 Result = {};
     Result.X = A.X;
@@ -833,7 +968,7 @@ Equals(float A, float B, float Tolerance)
 static inline void
 Approach(float *Value, float Target, float Rate, float Delta_t)
 {
-    *Value += float((Target - *Value) * (1.0 - pow(2.0f, -Rate * Delta_t)));
+    *Value += (float)((Target - *Value) * (1.0 - pow(2.0f, -Rate * Delta_t)));
     if(Equals(*Value, Target, 0.001f))
     {
         *Value = Target;
@@ -1448,7 +1583,7 @@ static inline mat3 mat3Create(void)
 
 static inline mat3 mat3FromMat4(mat4 Transform)
 {
-    return mat3{
+    return (mat3){
         Transform.Elements[0][0], Transform.Elements[1][0], Transform.Elements[2][0],
         Transform.Elements[0][1], Transform.Elements[1][1], Transform.Elements[2][1],
         Transform.Elements[0][2], Transform.Elements[1][2], Transform.Elements[2][2]
@@ -3477,3 +3612,4 @@ static inline bool operator!=(mat4 A, mat4 B)
 #endif
 
 #endif /* HANDMADE_MATH_H */
+#endif

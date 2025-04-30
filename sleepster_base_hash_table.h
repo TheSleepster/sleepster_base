@@ -1,28 +1,48 @@
 #if !defined(SLEEPSTER_BASE_HASH_TABLE_H)
 /* ========================================================================
    $File: sleepster_base_hash_table.h $
-   $Date: Fri, 14 Mar 25: 01:04AM $
+   $Date: Sat, 19 Apr 25: 08:05PM $
    $Revision: $
    $Creator: Justin Lewis $
    ======================================================================== */
 
 #define SLEEPSTER_BASE_HASH_TABLE_H
-constexpr uint32 MAX_HASH_ENTRIES = 512;
+const uint32 MAX_HASH_ENTRIES = 512;
 
-struct hash_entry
+typedef struct hash_entry_t
 {
     void *Key;
     void *Value;
-};
+}hash_entry;
 
 // TODO(Sleepster): Collisions? Not my problem 
-struct hash_table
+typedef struct hash_table_t
 {
-    uint32 EntryCounter;
-    uint32 MaxEntries  = MAX_HASH_ENTRIES;
+    uint32      EntryCounter;
+    uint32      MaxEntries;
 
-    hash_entry Entries[MAX_HASH_ENTRIES];
-};
+    hash_entry *Entries;
+}hash_table;
+
+// functions
+internal uint32 HashGetIndex__(void *Key);
+internal void   HashInsertPair(hash_table *Table, void *Key, void *Value);
+internal void*  HashGetValue(hash_table *Table, void *Key);
+internal void   HashRemoveValueAtIndex(hash_table *Table, uint32 Index);
+internal void   HashRemoveIndex(hash_table *Table, uint32 Index);
+internal void   HashClearTable(hash_table *Table);
+// fuctions
+
+internal hash_table
+HashCreateNew(memory_arena *Arena, u64 EntryCount)
+{
+    hash_table Result;
+    Result.MaxEntries   = EntryCount;
+    Result.EntryCounter = 0;
+    Result.Entries      = PushArray(Arena, hash_entry, EntryCount, 4);
+
+    return(Result);
+}
 
 #define HashGetIndex(key) HashGetIndex__((void *)key)
 internal uint32
@@ -50,7 +70,7 @@ HashInsertPair(hash_table *Table, void *Key, void *Value)
     Assert(HashIndex >= 0, "Hash Index is Invalid...");
 
     hash_entry *Entry = &Table->Entries[HashIndex];
-    if(StringCompare((string_u8 *)Entry->Key, (string_u8 *)Key))
+    if(pStringCompare((string_u8 *)Entry->Key, (string_u8 *)Key))
     {
         Entry->Value = Value;
         Log(SL_LOG_WARNING, "Value at index %d has been updated...", HashIndex);
@@ -70,7 +90,7 @@ HashGetValue(hash_table *Table, void *Key)
     Assert(HashIndex >= 0, "Hash Index is Invalid...");
 
     hash_entry *Entry = &Table->Entries[HashIndex];
-    if(StringCompare((string_u8 *)Entry->Key, (string_u8 *)Key))
+    if(pStringCompare((string_u8 *)Entry->Key, (string_u8 *)Key))
     {
         Result = Table->Entries[HashIndex].Value;
     }
@@ -106,4 +126,3 @@ HashClearTable(hash_table *Table)
 }
 
 #endif
-

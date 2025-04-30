@@ -1,22 +1,21 @@
 #if !defined(SLEEPSTER_BASE_STRING_H)
 /* ========================================================================
    $File: sleepster_base_string.h $
-   $Date: Thu, 13 Mar 25: 03:04PM $
+   $Date: Sat, 19 Apr 25: 08:02PM $
    $Revision: $
    $Creator: Justin Lewis $
    ======================================================================== */
 
 #define SLEEPSTER_BASE_STRING_H
-
 #include "sleepster_base_types.h"
 #include "sleepster_base_memory.h"
 
 // NOTE(Sleepster): THESE ARE READ ONLY
-struct string_u8
+typedef struct string_u8_t
 {
     uint8 *Data;
     uint32 Length;
-};
+}string_u8;
 
 #define str_lit(x) (StringCreate(x, GetStringLength(x)))
 #define c_str(x)   ((const char *)x.Data)
@@ -26,7 +25,24 @@ struct string_u8
 #define glue__(a, b) a##b
 #define glue(a, b)   glue__(a, b)
 
-constexpr string_u8 NullString = {};
+global string_u8 NullString = {};
+
+// functions
+internal string_u8        StringCreate(char *StringData, uint32 Length);
+internal void             StringMakeHeap(memory_arena *Arena, string_u8 *String);
+internal string_u8*       StringCopy(memory_arena *Arena, string_u8 String);
+internal string_u8        StringSubFromLeft(string_u8 String, uint32 Index);
+internal string_u8        StringSubFromRight(string_u8 String, uint32 Index);
+internal string_u8        StringSubstring(string_u8 String, uint32 FirstIndex, uint32 LastIndex);
+internal string_u8        StringConcat(memory_arena *Arena, string_u8 A, string_u8 B);
+internal inline bool32    pStringCompare(string_u8 *A, string_u8 *B);
+internal inline bool32    StringCompare(string_u8 A, string_u8 B);
+internal inline uint32    GetStringLength(const char *String);
+internal inline int32     FindFirstCharFromLeft(string_u8 String, char Character);
+internal inline int32     FindFirstCharFromRight(string_u8 String, char Character);
+internal inline string_u8 GetFilenameFromPath(string_u8 Filepath);
+internal inline string_u8 GetFileExtFromPath(string_u8 Filepath);
+// functions
 
 internal string_u8
 StringCreate(char *StringData, uint32 Length)
@@ -42,7 +58,7 @@ internal void
 StringMakeHeap(memory_arena *Arena, string_u8 *String)
 {
     string_u8 Temp = {};
-    Temp.Data = (uint8 *)ArenaPushSize(Arena, String->Length * sizeof(uint8));
+    Temp.Data = (uint8 *)PushSize(Arena, String->Length * sizeof(uint8), 4);
     memcpy(Temp.Data, String->Data, String->Length * sizeof(uint8));
 
     String->Data = Temp.Data;
@@ -52,11 +68,11 @@ internal string_u8*
 StringCopy(memory_arena *Arena, string_u8 String)
 {
     string_u8 *Result;
-    Result = ArenaPushStruct(Arena, string_u8);
+    Result = PushStruct(Arena, string_u8, 4);
     if(Result)
     {
         Result->Length = String.Length;
-        Result->Data   = ArenaPushArray(Arena, uint8, String.Length);
+        Result->Data   = PushArray(Arena, uint8, String.Length, 4);
         if(Result->Data)
         {
             memcpy(Result->Data, String.Data, String.Length * sizeof(uint8));
@@ -109,7 +125,7 @@ StringConcat(memory_arena *Arena, string_u8 A, string_u8 B)
     string_u8 Result;
 
     uint32 NewLength = A.Length + B.Length;
-    Result.Data   = ArenaPushArray(Arena, uint8, NewLength);
+    Result.Data   = PushArray(Arena, uint8, NewLength, 4);
     Result.Length = NewLength;
 
     memcpy(Result.Data, A.Data, A.Length);
@@ -120,7 +136,7 @@ StringConcat(memory_arena *Arena, string_u8 A, string_u8 B)
 
 // NOTE(Sleepster): Compare By Pointer
 internal inline bool32
-StringCompare(string_u8 *A, string_u8 *B)
+pStringCompare(string_u8 *A, string_u8 *B)
 {
     bool32 Result = false;
     if(A && B)
@@ -226,5 +242,4 @@ GetFileExtFromPath(string_u8 Filepath)
 
     return(Result);
 }
-
 #endif

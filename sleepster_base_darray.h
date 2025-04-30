@@ -1,13 +1,12 @@
 #if !defined(SLEEPSTER_BASE_DARRAY_H)
 /* ========================================================================
    $File: sleepster_base_darray.h $
-   $Date: Fri, 14 Mar 25: 01:25PM $
+   $Date: Sat, 19 Apr 25: 07:57PM $
    $Revision: $
    $Creator: Justin Lewis $
    ======================================================================== */
 
 #define SLEEPSTER_BASE_DARRAY_H
-
 /*
     Justin 3-14-2025:
 
@@ -25,9 +24,10 @@
 
 #include <string.h>
 #include "sleepster_base_debug.h"
+#include "sleepster_base_memory.h"
 
-constexpr uint32 DefaultDArrayCapacity = 10;
-constexpr uint32 DArrayResizeFactor = 2;
+global uint32 DefaultDArrayCapacity = 10;
+global uint32 DArrayResizeFactor = 2;
 
 enum darray_header_data
 {
@@ -60,6 +60,17 @@ do{                                                                             
     array = (decltype(value)*)(DArrayAppendValue_(array, &Temp, sizeof(value))); \
 }while(0)
 
+// functions
+internal inline uint64 DArrayGetHeaderInfo(void *Array, uint64 FieldIndex);
+internal inline void   DArraySetHeaderInfo(void *Array, uint64 FieldIndex, uint64 Value);
+internal        void*  DArrayCreate_(uint64 TypeSize, const char *File, int32 Line, uint64 InitialCapacity);
+internal inline void   DArrayDestroy(void *Array);
+internal        void*  DArrayResize(void *Array);
+internal        void*  DArrayAppendValue_(void *Array, void *Value, uint64 ElementSize);
+internal        void*  DArrayPopLastIndex(void *Array, uint32 ReturnPointerDataSize);
+internal        void   DArrayInsertAt_(void *Array, void *Value, uint32 ValueSize, uint64 Index);
+internal        void*  DArrayRemoveAtIndex(void *Array, uint64 Index, uint32 ReturnPointerDataSize);
+
 internal inline uint64
 DArrayGetHeaderInfo(void *Array, uint64 FieldIndex)
 {
@@ -77,7 +88,7 @@ DArraySetHeaderInfo(void *Array, uint64 FieldIndex, uint64 Value)
 }
 
 internal void*
-DArrayCreate_(uint64 TypeSize, const char *File = null, int32 Line = -1, uint64 InitialCapacity = DefaultDArrayCapacity)
+DArrayCreate_(uint64 TypeSize, const char *File, int32 Line, uint64 InitialCapacity)
 {
     uint64 HeaderSize = DARRAY_HEADER_SIZE * sizeof(uint64);
     uint64 ArraySize  = TypeSize * InitialCapacity;
@@ -182,7 +193,7 @@ DArrayPopLastIndex(void *Array, uint32 ReturnPointerDataSize)
     {
         Log(SL_LOG_WARNING, "You are returning a value of size '%d' to a pointer that wants a value of size '%'...",
             ArrayElementSize, ReturnPointerDataSize);
-        DebugBreak();
+        DEBUGBreak();
     }
 
     uint64 BaseAddress = (uint64)Array;
@@ -240,7 +251,7 @@ DArrayRemoveAtIndex(void *Array, uint64 Index, uint32 ReturnPointerDataSize)
     {
         Log(SL_LOG_WARNING, "You are returning a value of size '%d' to a pointer that wants a value of size '%'...",
             ArrayElementSize, ReturnPointerDataSize);
-        DebugBreak();
+        DEBUGBreak();
     }
     
     if(Index <= Capacity)
@@ -262,7 +273,7 @@ DArrayRemoveAtIndex(void *Array, uint64 Index, uint32 ReturnPointerDataSize)
     else
     {
         Log(SL_LOG_FATAL, "You cannot access index '%d' as the darray is of capacity '%'...", Index, Capacity);
-        DebugBreak();
+        DEBUGBreak();
     }
 
     return(Result);

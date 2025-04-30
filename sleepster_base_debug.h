@@ -1,12 +1,13 @@
-#if !defined(SLEEPSTER_DEBUG_H)
+#if !defined(SLEEPSTER_BASE_DEBUG_H)
 /* ========================================================================
    $File: sleepster_base_debug.h $
-   $Date: Wed, 12 Mar 25: 12:52PM $
+   $Date: Sat, 19 Apr 25: 07:57PM $
    $Revision: $
    $Creator: Justin Lewis $
    ======================================================================== */
 
-#define SLEEPSTER_DEBUG_H
+#define SLEEPSTER_BASE_DEBUG_H
+
 #include "sleepster_base_types.h"
 #include <stdarg.h>
 #include <stdio.h>
@@ -30,24 +31,24 @@
     }                                                                                      \
 }
 
-#define DebugBreak() DebugHalt()
+#define DEBUGBreak() DebugHalt()
 #else
 
 #define Assert(Condition, Message, ...)
 #define DebugHalt()
-#define DebugBreak() DebugHalt()
+#define DEBUGBreak() DebugHalt()
 
 #endif
 
 #define InvalidCodePath DebugHalt()
-enum debug_log_level
+typedef enum debug_log_level_t
 {
     SL_LOG_TRACE,
     SL_LOG_INFO,
     SL_LOG_WARNING,
     SL_LOG_ERROR,
     SL_LOG_FATAL
-};
+}debug_log_level;
 
 #define Log(Level, Message, ...) _Log(Level, Message, __FILE__, __LINE__, ##__VA_ARGS__)
 
