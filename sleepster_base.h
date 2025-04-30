@@ -117,12 +117,26 @@
     #define ARCH_ARM64 0
 #endif
 
+
+// OVERRIDE FUNCTIONS
+#define PLATFORM_VIRTUAL_ALLOC(name)     void     *name(u64 Size)
+#define PLATFORM_VIRTUAL_FREE(name)      void      name(void *Data, u64 Size)
+
+#define PLATFORM_HEAP_ALLOC(name)        void     *name(u64 Size)
+#define PLATFORM_HEAP_REALLOC(name)      void     *name(void *Data, u64 NewSize)
+#define PLATFORM_HEAP_FREE(name)         void      name(void *Data)
+
+#define PLATFORM_READ_ENTIRE_FILE(name)  string_u8 name(memory_arena *Arena, string_u8 Filepath)
+#define PLATFORM_WRITE_ENTIRE_FILE(name) bool8     name(string_u8 Data, string_u8 Filepath)
+// OVERRIDE FUNCTIONS
+
 #include "sleepster_base_types.h"
 #include "sleepster_base_debug.h"
 #include "sleepster_base_memory.h"
 #include "sleepster_base_darray.h"
 #include "sleepster_base_string.h"
 #include "sleepster_base_hash_table.h"
+#include "sleepster_base_fileio.h"
 
 #endif // SLEEPSTER_BASE_H
 

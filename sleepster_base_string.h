@@ -18,7 +18,7 @@ typedef struct string_u8_t
 }string_u8;
 
 #define str_lit(x) (StringCreate(x, GetStringLength(x)))
-#define c_str(x)   ((const char *)x.Data)
+#define cstr_(x)   ((const char *)x.Data)
 
 #define stringify_(s) #s
 #define stringify(s) stringify_(s)

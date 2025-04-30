@@ -64,14 +64,5 @@ typedef double   float64;
 #define MemberHelper(type, member)    (((type *)0)->member)
 #define GetMemberOffset(type, member) IntFromPtr(&MemberHelper(type, member))
 
-// MEMORY OVERRIDE FUNCTIONS
-#define PLATFORM_VIRTUAL_ALLOC(name) void *name(u64 Size)
-#define PLATFORM_VIRTUAL_FREE(name)  void  name(void *Data, u64 Size)
-
-#define PLATFORM_HEAP_ALLOC(name)    void *name(u64 Size)
-#define PLATFORM_HEAP_REALLOC(name)  void *name(void *Data, u64 NewSize)
-#define PLATFORM_HEAP_FREE(name)     void  name(void *Data)
-// MEMORY OVERRIDE FUNCTIONS
-
 #define null NULL
 #endif

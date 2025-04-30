@@ -16,7 +16,7 @@
 #define MB(x) (KB(x) * 1000)
 #define GB(x) (MB(x) * 1000)
 
-#ifndef SL_OVERRIDE_C_STBLIB_MEMORY
+#ifndef SL_OVERRIDE_C_STBLIB
 
 internal inline
 PLATFORM_HEAP_ALLOC(PlatformHeapAlloc)
@@ -47,6 +47,7 @@ PLATFORM_VIRTUAL_FREE(PlatformVirtualFree)
 {
     return(free(Data));
 }
+
 #endif
 
 /*
